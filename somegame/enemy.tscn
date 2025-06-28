@@ -1,0 +1,40 @@
+[gd_scene load_steps=5 format=3 uid="uid://br0jwa1oiq3be"]
+
+[ext_resource type="Script" uid="uid://bcv4hpir2pgth" path="res://enemy.gd" id="1_7k104"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_fj7yv"]
+size = Vector2(10, 10)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_aqk2v"]
+radius = 2.23607
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_aqk2v"]
+size = Vector2(14, 3)
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 2
+script = ExtResource("1_7k104")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+color = Color(0.616629, 0.0785959, 4.81308e-08, 1)
+polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_fj7yv")
+
+[node name="HurtBox" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(0, -4)
+shape = SubResource("CircleShape2D_aqk2v")
+
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(0, 4.5)
+shape = SubResource("RectangleShape2D_aqk2v")
+
+[connection signal="body_entered" from="HurtBox" to="." method="_on_area_2d_body_entered"]
+[connection signal="body_entered" from="HitBox" to="." method="_on_hit_box_entered"]
