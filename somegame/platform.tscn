@@ -7,7 +7,7 @@ size = Vector2(10, 10)
 scale = Vector2(10, 1)
 
 [node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color(0.428839, 0.43062, 0.422503, 1)
+color = Color(0.14902, 0.470588, 0.321569, 1)
 polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]

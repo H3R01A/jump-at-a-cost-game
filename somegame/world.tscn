@@ -1,11 +1,20 @@
-[gd_scene load_steps=8 format=3 uid="uid://drc7e0xg67mj6"]
+[gd_scene load_steps=14 format=3 uid="uid://drc7e0xg67mj6"]
 
 [ext_resource type="Script" uid="uid://cdvli80d6bcfd" path="res://player.gd" id="1_f3sb7"]
 [ext_resource type="Script" uid="uid://bvwqtirvi6kra" path="res://camera_2d.gd" id="1_fj7yv"]
+[ext_resource type="Texture2D" uid="uid://c1a6acaxeavx3" path="res://sprites.png" id="3_ioo17"]
 [ext_resource type="PackedScene" uid="uid://btrnmpdl4flle" path="res://platform.tscn" id="4_036b0"]
 [ext_resource type="Script" uid="uid://b5vck3xaawvtt" path="res://enemy_count.gd" id="4_aqk2v"]
+[ext_resource type="FontFile" uid="uid://exidl8u3cb5a" path="res://PressStart2P-Regular.ttf" id="4_ic0uy"]
 [ext_resource type="PackedScene" uid="uid://br0jwa1oiq3be" path="res://enemy.tscn" id="5_dwbse"]
 [ext_resource type="PackedScene" uid="uid://dsmokko12bw2l" path="res://health_pickup.tscn" id="6_dwbse"]
+[ext_resource type="AudioStream" uid="uid://df8mog32hmeok" path="res://jumpatacost.wav" id="7_gbfbk"]
+[ext_resource type="Script" uid="uid://btqyku1uslr62" path="res://audio_stream_player.gd" id="8_ioo17"]
+[ext_resource type="Script" uid="uid://b0k6jmtih06f3" path="res://sfx.gd" id="10_wse8f"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ioo17"]
+atlas = ExtResource("3_ioo17")
+region = Rect2(0, 0, 10, 10)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fj7yv"]
 size = Vector2(10, 10)
@@ -18,9 +27,13 @@ script = ExtResource("1_fj7yv")
 [node name="Player" type="CharacterBody2D" parent="."]
 unique_name_in_owner = true
 script = ExtResource("1_f3sb7")
+normal_color = Color(0.705882, 0.776471, 0.243137, 1)
+hurt_color = Color(0.0784314, 0.337255, 0.380392, 1)
+hop_color = Color(0.627451, 0.690196, 0.329412, 1)
+slam_color = Color(0.443137, 0.576471, 0.309804, 1)
 
-[node name="Polygon2D" type="Polygon2D" parent="Player"]
-polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+[node name="Sprite2D" type="Sprite2D" parent="Player"]
+texture = SubResource("AtlasTexture_ioo17")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("RectangleShape2D_fj7yv")
@@ -42,6 +55,8 @@ unique_name_in_owner = true
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 23.0
+theme_override_colors/font_color = Color(0.705882, 0.776471, 0.243137, 1)
+theme_override_fonts/font = ExtResource("4_ic0uy")
 
 [node name="EnemyCount" type="Label" parent="CanvasLayer/UI"]
 unique_name_in_owner = true
@@ -52,6 +67,8 @@ anchor_right = 1.0
 offset_left = -43.0
 offset_bottom = 23.0
 grow_horizontal = 0
+theme_override_colors/font_color = Color(0.705882, 0.776471, 0.243137, 1)
+theme_override_fonts/font = ExtResource("4_ic0uy")
 text = "10/10"
 
 [node name="EnemyCount" type="Node" parent="."]
@@ -59,9 +76,10 @@ script = ExtResource("4_aqk2v")
 
 [node name="Platform" parent="." instance=ExtResource("4_036b0")]
 position = Vector2(134, 14)
+scale = Vector2(10, 2)
 
 [node name="Platform2" parent="." instance=ExtResource("4_036b0")]
-position = Vector2(41, 26)
+position = Vector2(41, 24)
 
 [node name="Platform4" parent="." instance=ExtResource("4_036b0")]
 position = Vector2(227, 1)
@@ -70,7 +88,8 @@ position = Vector2(227, 1)
 position = Vector2(426, 75)
 
 [node name="Platform3" parent="." instance=ExtResource("4_036b0")]
-position = Vector2(-70, 32)
+position = Vector2(-34, -26)
+scale = Vector2(5, 50)
 
 [node name="Platform5" parent="." instance=ExtResource("4_036b0")]
 position = Vector2(324, 45)
@@ -87,13 +106,15 @@ position = Vector2(750, 15)
 [node name="Enemy" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_dwbse")]
 position = Vector2(186, -10)
 target = NodePath("../Target")
-top_speed = 10.0
+top_speed = 20.0
 
 [node name="Enemy2" parent="." instance=ExtResource("5_dwbse")]
-position = Vector2(287, 33)
+position = Vector2(296, 35)
 
-[node name="Enemy3" parent="." instance=ExtResource("5_dwbse")]
+[node name="Enemy3" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_dwbse")]
 position = Vector2(463, 64)
+target = NodePath("../Node2D")
+top_speed = 25.0
 
 [node name="Enemy4" parent="." instance=ExtResource("5_dwbse")]
 position = Vector2(569, 34)
@@ -101,11 +122,64 @@ position = Vector2(569, 34)
 [node name="Enemy5" parent="." instance=ExtResource("5_dwbse")]
 position = Vector2(661, 16)
 
-[node name="Enemy6" parent="." instance=ExtResource("5_dwbse")]
+[node name="Node2D2" type="Node2D" parent="."]
+position = Vector2(731, 2)
+
+[node name="Enemy6" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_dwbse")]
 position = Vector2(778, 3)
+target = NodePath("../Node2D2")
+top_speed = 25.0
 
 [node name="Target" type="Node2D" parent="."]
 position = Vector2(270, -11)
 
 [node name="HealthPickup" parent="." instance=ExtResource("6_dwbse")]
 position = Vector2(512, 31)
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_gbfbk")
+script = ExtResource("8_ioo17")
+
+[node name="Platform10" parent="." instance=ExtResource("4_036b0")]
+position = Vector2(324, 35)
+scale = Vector2(1, 1)
+
+[node name="Node2D" type="Node2D" parent="."]
+position = Vector2(385, 64)
+
+[node name="Platform11" parent="." instance=ExtResource("4_036b0")]
+position = Vector2(692, -28)
+scale = Vector2(5, 1)
+
+[node name="Enemy7" parent="." instance=ExtResource("5_dwbse")]
+position = Vector2(676, -43)
+
+[node name="Platform12" parent="." instance=ExtResource("4_036b0")]
+position = Vector2(500, -20.7828)
+scale = Vector2(20, 1)
+
+[node name="Enemy8" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_dwbse")]
+position = Vector2(415, -32.7828)
+target = NodePath("../Node2D3")
+top_speed = 30.0
+
+[node name="Node2D3" type="Node2D" parent="."]
+position = Vector2(492.283, -37)
+
+[node name="Enemy9" parent="." node_paths=PackedStringArray("target") instance=ExtResource("5_dwbse")]
+position = Vector2(578, -34.7828)
+target = NodePath("../Node2D4")
+top_speed = 45.0
+
+[node name="Node2D4" type="Node2D" parent="."]
+position = Vector2(552.278, -34.9142)
+
+[node name="HealthPickup2" parent="." instance=ExtResource("6_dwbse")]
+position = Vector2(709, -61)
+
+[node name="HealthPickup3" parent="." instance=ExtResource("6_dwbse")]
+position = Vector2(635, -98)
+
+[node name="SFX" type="AudioStreamPlayer" parent="."]
+volume_db = -10.0
+script = ExtResource("10_wse8f")

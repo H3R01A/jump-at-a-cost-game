@@ -1,25 +1,30 @@
-[gd_scene load_steps=5 format=3 uid="uid://br0jwa1oiq3be"]
+[gd_scene load_steps=7 format=3 uid="uid://br0jwa1oiq3be"]
 
 [ext_resource type="Script" uid="uid://bcv4hpir2pgth" path="res://enemy.gd" id="1_7k104"]
+[ext_resource type="Texture2D" uid="uid://c1a6acaxeavx3" path="res://sprites.png" id="2_4gyqm"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qi2p4"]
+atlas = ExtResource("2_4gyqm")
+region = Rect2(10, 0, 10, 10)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_fj7yv"]
-size = Vector2(10, 10)
+size = Vector2(8, 9)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_aqk2v"]
-radius = 2.23607
+radius = 3.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_aqk2v"]
-size = Vector2(14, 3)
+size = Vector2(12, 3)
 
 [node name="Enemy" type="CharacterBody2D"]
 collision_layer = 2
 script = ExtResource("1_7k104")
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
-color = Color(0.616629, 0.0785959, 4.81308e-08, 1)
-polygon = PackedVector2Array(5, 5, 5, -5, -5, -5, -5, 5)
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_qi2p4")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 0.5)
 shape = SubResource("RectangleShape2D_fj7yv")
 
 [node name="HurtBox" type="Area2D" parent="."]

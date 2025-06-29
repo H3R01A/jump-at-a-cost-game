@@ -1,6 +1,11 @@
-[gd_scene load_steps=3 format=3 uid="uid://dsmokko12bw2l"]
+[gd_scene load_steps=5 format=3 uid="uid://dsmokko12bw2l"]
 
 [ext_resource type="Script" uid="uid://ga066hqa77wn" path="res://health_pickup.gd" id="1_01648"]
+[ext_resource type="Texture2D" uid="uid://c1a6acaxeavx3" path="res://sprites.png" id="2_awyve"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xl6eh"]
+atlas = ExtResource("2_awyve")
+region = Rect2(20, 0, 10, 10)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_awyve"]
 radius = 9.0
@@ -9,11 +14,8 @@ radius = 9.0
 collision_layer = 0
 script = ExtResource("1_01648")
 
-[node name="Polygon2D" type="Polygon2D" parent="."]
-position = Vector2(-2.5, 7)
-scale = Vector2(5, 5)
-color = Color(1, 0, 0, 1)
-polygon = PackedVector2Array(0, -3, 1, -3, 1, -2, 2, -2, 2, -1, 1, -1, 1, 0, 0, 0, 0, -1, -1, -1, -1, -2, 0, -2)
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_xl6eh")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_awyve")
